@@ -43,7 +43,7 @@
         }
       }
     },
-    "exerciseTemplate": {
+    "exerciseTemplateData": {
       "type": "object",
       "required": ["id", "instruction", "exerciseType", "generator"],
       "properties": {
@@ -72,7 +72,7 @@
         }
       }
     },
-    "lesson": {
+    "lessonData": {
       "type": "object",
       "required": ["id", "name", "templates"],
       "properties": {
@@ -141,7 +141,7 @@
   },
   "type": "array",
   "items": {
-    "$ref": "#/definitions/lesson"
+    "$ref": "#/definitions/lessonData"
   },
   "minItems": 1
 }
