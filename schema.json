@@ -85,7 +85,7 @@
         "templates": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/exerciseTemplate"
+            "$ref": "#/definitions/exerciseTemplateData"
           },
           "minItems": 1
         }
