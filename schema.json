@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "definitions": {
+    "exerciseTypeNames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": ["BY_INSTRUCTION"]
+    },
+    "generatorNames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": ["SINGLE", "VARY_PROPERTY_WHOLE_NUMBER_RANGE"]
+    },
+    "exerciseType": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["BY_INSTRUCTION"]
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "generator": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["SINGLE", "VARY_PROPERTY_WHOLE_NUMBER_RANGE"]
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "exerciseTemplate": {
+      "type": "object",
+      "required": ["id", "instruction", "exerciseType", "generator"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "exerciseType": {
+          "$ref": "#/definitions/exerciseType"
+        },
+        "generator": {
+          "$ref": "#/definitions/generator"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "blockedBy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "lesson": {
+      "type": "object",
+      "required": ["id", "name", "templates"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "templates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/exerciseTemplate"
+          },
+          "minItems": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "templates": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "blockedBy": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "templates": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "blockedBy": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "allOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "type": "array",
+  "items": {
+    "$ref": "#/definitions/lesson"
+  },
+  "minItems": 1
+}
